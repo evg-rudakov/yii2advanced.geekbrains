@@ -1,0 +1,9 @@
+suite_namespace: frontend\tests\acceptance
+actor: AcceptanceTester
+modules:
+  enabled:
+  - PhpBrowser:
+      url: http://test.yii2advanced.geekbrains
+
+  - Yii2:
+      part: init
