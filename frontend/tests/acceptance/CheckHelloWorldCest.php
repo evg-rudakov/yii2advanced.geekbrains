@@ -10,9 +10,10 @@ class CheckHelloWorldCest
     }
 
     // tests
-    public function tryToTest(AcceptanceTester $I)
+    public function LoginPage(AcceptanceTester $I)
     {
-        $I->amOnPage(Url::to(['hello/world']));
-        $I->see('Helllo');
+        $I->amOnPage(Url::to(['/site/login']));
+        $I->click('.btn.btn-primary');
+        $I->see('Username cannot be blank');
     }
 }
