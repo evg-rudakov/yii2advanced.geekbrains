@@ -35,6 +35,7 @@ RUN apt-get install -y composer supervisor
 
 #откроем 80 порт
 EXPOSE 80
+EXPOSE 8080
 
 #добавим в контейнер конфигурационный файл php.ini, расположим его на стаднатрном для ubuntu месте
 ADD ./docker/conf/php/php.ini /etc/php/7.2/apache2/php.ini
@@ -47,10 +48,10 @@ ADD ./docker/conf/apache/apache2.conf /etc/apache2/apache2.conf
 
 #удалим содержащиеся файлы в этих папках, потому что вскоре там будут наши
 RUN rm -R /etc/apache2/sites-enabled/* /etc/apache2/sites-available/* /var/www/*
-
-#укажим дирректорию /var/www как рабочую
 WORKDIR /var/www
-
-#запускаем процес apache2 в нормальном режиме (На переднем плане).
+#Запускаем процесс apache2 в нормальном режиме (На переднем плане).
 #Пока живет это процесс, живет и контейнер.
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+ADD ./docker/conf/entry.sh /etc/entry.sh
+ENTRYPOINT ["/bin/bash", "/etc/entry.sh"]
+
+

@@ -11,11 +11,11 @@ services:
       PHP_IDE_CONFIG: serverName=localhost
     ports:
     - 82:80
+    - 8080:8080
     volumes:
     - ./:/var/www
     links:
     - db
-
     depends_on:
     - db
 
@@ -33,3 +33,16 @@ services:
       MYSQL_PASSWORD: mysqluser
     volumes:
     - ./docker/database:/var/lib/mysql
+#
+#  mongodb:
+#    container_name: mongo_advanced
+#    image: bitnami/mongodb:latest
+#    ports:
+#    - 27017:27017
+#    environment:
+#    - ALLOW_EMPTY_PASSWORD=yes
+#    #- MONGODB_ROOT_PASSWORD=mongo
+#    #- MONGODB_USERNAME=mongo
+#    #- MONGODB_PASSWORD=mongo
+#    #- MONGODB_DATABASE=project
+
