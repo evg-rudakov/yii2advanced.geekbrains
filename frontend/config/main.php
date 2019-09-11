@@ -15,7 +15,8 @@ $config =  [
         'request' => [
             'csrfParam' => '_csrf-frontend',
             'parsers' => [
-                'application/json' => \yii\web\JsonParser::class
+                'application/json' => \yii\web\JsonParser::class,
+                'charset' => 'UTF-8'
             ],
         ],
         'user' => [
@@ -41,11 +42,18 @@ $config =  [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
+//            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
                 [
-                    'class'=>\yii\rest\UrlRule::class,
-                    'controller' => 'project'
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'task',
+                    //отключим трансформацию task в tasks
+//                    'pluralize' => false,
+                    'extraPatterns' => [
+                        //'METHOD action' => 'actionFunction',
+                        'GET random/<count>' => 'random',
+                    ],
                 ]
             ],
         ],

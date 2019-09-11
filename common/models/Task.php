@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "task".
@@ -13,6 +15,8 @@ use Yii;
  * @property int $author_id
  * @property int $status_id
  * @property int $priority_id
+ * @property int $created_at
+ * @property int $updated_at
  *
  * @property Comment[] $comments
  * @property Tag[] $tags
@@ -39,8 +43,9 @@ class Task extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['author_id', 'status_id', 'priority_id'], 'integer'],
             [['name'], 'string', 'max' => 255],
-            [['priority_id'], 'exist', 'skipOnError' => true, 'targetClass' => TaskPriority::className(), 'targetAttribute' => ['priority_id' => 'id']],
-            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => TaskStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
+            [['priority_id'], 'exist', 'skipOnError' => true, 'targetClass' => TaskPriority::class, 'targetAttribute' => ['priority_id' => 'id']],
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => TaskStatus::class, 'targetAttribute' => ['status_id' => 'id']],
+            [['created_at', 'updated_at'], 'safe']
         ];
     }
 
@@ -59,12 +64,26 @@ class Task extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            'timestampBehavior' => [
+                'class' => TimestampBehavior::class,
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                    'value' => time(),
+                ],
+            ],
+        ];
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getComments()
     {
-        return $this->hasMany(Comment::className(), ['task_id' => 'id']);
+        return $this->hasMany(Comment::class, ['task_id' => 'id']);
     }
 
     /**
@@ -72,7 +91,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getTags()
     {
-        return $this->hasMany(Tag::className(), ['task_id' => 'id']);
+        return $this->hasMany(Tag::class, ['task_id' => 'id']);
     }
 
     /**
@@ -80,7 +99,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getPriority()
     {
-        return $this->hasOne(TaskPriority::className(), ['id' => 'priority_id']);
+        return $this->hasOne(TaskPriority::class, ['id' => 'priority_id']);
     }
 
     /**
@@ -88,6 +107,22 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getStatus()
     {
-        return $this->hasOne(TaskStatus::className(), ['id' => 'status_id']);
+        return $this->hasOne(TaskStatus::class, ['id' => 'status_id']);
+    }
+
+    public function fields()
+    {
+        $parentFields =  parent::fields();
+        $modelFields = [
+            'created_at'=> function(){
+                if (isset($this->created_at)){
+                    return Yii::$app->formatter->asDatetime($this->created_at);
+                }
+
+                return null;
+            }
+        ];
+
+        return array_merge($parentFields, $modelFields);
     }
 }
