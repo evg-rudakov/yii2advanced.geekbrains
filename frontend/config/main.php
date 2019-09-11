@@ -14,6 +14,9 @@ $config =  [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'parsers' => [
+                'application/json' => \yii\web\JsonParser::class
+            ],
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -40,6 +43,10 @@ $config =  [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                [
+                    'class'=>\yii\rest\UrlRule::class,
+                    'controller' => 'project'
+                ]
             ],
         ],
         'view'=>[

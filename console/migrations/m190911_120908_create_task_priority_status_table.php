@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Class m190911_120908_table
  */
-class m190911_120908_table extends Migration
+class m190911_120908_create_task_priority_status_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -21,16 +21,16 @@ class m190911_120908_table extends Migration
             'priority_id' => $this->Integer()->notNull(),
         ]);
 
-        $this->createTable('{{%status_task}}', [
+        $this->createTable('{{%task_status}}', [
             'id' => $this->primaryKey(),
-            'status_name' => $this->string(255)->notNull(),
+            'name' => $this->string(255)->notNull(),
         ]);
 
         $this->addForeignKey(
             'fk_task_status_id',
             'task',
             'status_id',
-            'status_task',
+            'task_status',
             'id',
             'CASCADE',
             'CASCADE'
@@ -54,7 +54,7 @@ class m190911_120908_table extends Migration
         $this->createTable('{{%comment}}', [
             'id' => $this->primaryKey(),
             'task_id' => $this->integer()->notNull(),
-            'comment_text' => $this->text()->notNull(),
+            'text' => $this->text()->notNull(),
         ]);
         $this->addForeignKey(
             'fk_comment_task_id',
@@ -66,16 +66,16 @@ class m190911_120908_table extends Migration
             'CASCADE'
         );
 
-        $this->createTable('{{%priority_task}}', [
+        $this->createTable('{{%task_priority}}', [
             'id' => $this->primaryKey(),
-            'priority_name' => $this->string(255)->notNull(),
+            'name' => $this->string(255)->notNull(),
         ]);
 
         $this->addForeignKey(
             'fk_task_priority_id',
             'task',
             'priority_id',
-            'priority_task',
+            'task_priority',
             'id',
             'CASCADE',
             'CASCADE'

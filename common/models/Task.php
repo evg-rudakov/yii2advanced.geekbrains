@@ -16,8 +16,8 @@ use Yii;
  *
  * @property Comment[] $comments
  * @property Tag[] $tags
- * @property PriorityTask $priority
- * @property StatusTask $status
+ * @property TaskPriority $priority
+ * @property TaskStatus $status
  */
 class Task extends \yii\db\ActiveRecord
 {
@@ -39,8 +39,8 @@ class Task extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['author_id', 'status_id', 'priority_id'], 'integer'],
             [['name'], 'string', 'max' => 255],
-            [['priority_id'], 'exist', 'skipOnError' => true, 'targetClass' => PriorityTask::className(), 'targetAttribute' => ['priority_id' => 'id']],
-            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => StatusTask::className(), 'targetAttribute' => ['status_id' => 'id']],
+            [['priority_id'], 'exist', 'skipOnError' => true, 'targetClass' => TaskPriority::className(), 'targetAttribute' => ['priority_id' => 'id']],
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => TaskStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
         ];
     }
 
@@ -80,7 +80,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getPriority()
     {
-        return $this->hasOne(PriorityTask::className(), ['id' => 'priority_id']);
+        return $this->hasOne(TaskPriority::className(), ['id' => 'priority_id']);
     }
 
     /**
@@ -88,6 +88,6 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getStatus()
     {
-        return $this->hasOne(StatusTask::className(), ['id' => 'status_id']);
+        return $this->hasOne(TaskStatus::className(), ['id' => 'status_id']);
     }
 }

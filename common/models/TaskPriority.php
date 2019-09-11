@@ -5,21 +5,24 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "status_task".
+ * This is the model class for table "task_priority".
  *
  * @property int $id
- * @property string $status_name
+ * @property string $name
  *
  * @property Task[] $tasks
  */
-class StatusTask extends \yii\db\ActiveRecord
+class TaskPriority extends \yii\db\ActiveRecord
 {
+    const LOW_ID = 1;
+    const NORMAL_ID = 2;
+    const HIGH_ID = 3;
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'status_task';
+        return 'task_priority';
     }
 
     /**
@@ -28,8 +31,8 @@ class StatusTask extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status_name'], 'required'],
-            [['status_name'], 'string', 'max' => 255],
+            [['name'], 'required'],
+            [['name'], 'string', 'max' => 255],
         ];
     }
 
@@ -50,5 +53,14 @@ class StatusTask extends \yii\db\ActiveRecord
     public function getTasks()
     {
         return $this->hasMany(Task::className(), ['status_id' => 'id']);
+    }
+
+    public static function getPriorityName()
+    {
+        return [
+            self::LOW_ID=>'Низкий',
+            self::NORMAL_ID=>'Нормальный',
+            self::HIGH_ID=>'Высокий',
+        ];
     }
 }
