@@ -11,11 +11,43 @@ namespace frontend\controllers;
 
 use common\models\Task;
 use yii\data\ActiveDataProvider;
+use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;
 
 class TaskController extends ActiveController
 {
     public $modelClass = Task::class;
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        //подключаем авторизацию через HttpBearerAuth
+        //каждый запрос к этому контроллеру будет фильтроваться через это поведение
+        //authenticator - имеет больший приоритет чем ACF
+        $behaviors['authenticator'] = [
+//            'class' => QueryParamAuth::class,
+            'class' => HttpBearerAuth::class,
+//            'class' => HttpBasicAuth::::class //логин-пароль
+//            'tokenParam' => 'q',
+            //нужно исключить action которые используются в accessFilter ACF
+//            'except' => ['loign']
+        ];
+        return $behaviors;
+    }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+
+        // отключить действия "delete" и "create"
+        unset($actions['delete'], $actions['create']);
+
+        // настроить подготовку провайдера данных с помощью метода "prepareDataProvider()"
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+
+        return $actions;
+    }
+
 
 
     public function actionRandom($count=5)
@@ -58,12 +90,13 @@ class TaskController extends ActiveController
 
     }
 
-    public function actionIndex()
+    public function prepareDataProvider()
     {
         return new ActiveDataProvider([
             'query' => Task::find(),
             'pagination' => [
                 'pageSize' => 100,
+                'pageSizeParam'=>'count'
             ],
         ]);
     }

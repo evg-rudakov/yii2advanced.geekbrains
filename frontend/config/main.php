@@ -51,7 +51,7 @@ $config =  [
 //                    'pluralize' => false,
                     'extraPatterns' => [
                         //'METHOD action' => 'actionFunction',
-                        'POST random' => 'random',
+                        'POST random/<count>' => 'random',
                     ],
                 ]
             ],
@@ -68,6 +68,11 @@ $config =  [
             ]
         ],
 
+    ],
+    'modules' => [
+        'api' => [
+            'class' => \frontend\modules\api\Module::class
+        ],
     ],
     'params' => $params,
 ];
