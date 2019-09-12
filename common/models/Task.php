@@ -127,9 +127,6 @@ class Task extends \yii\db\ActiveRecord
             'status_id' => function () {
                 return $this->status->name;
             }
-            'user'=> function() {
-                return $this->author_id;
-    }
         ];
 
         return array_merge($parentFields, $modelFields);
