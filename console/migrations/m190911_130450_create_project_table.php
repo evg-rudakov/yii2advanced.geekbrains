@@ -30,6 +30,7 @@ class m190911_130450_create_project_table extends Migration
 
         $this->addForeignKey('fk_project_user_id', 'project', 'user_id', 'user', 'id');
         $this->addForeignKey('fk_project_status_status_id', 'project', 'project_status_id', 'project_status', 'id');
+
     }
 
     /**

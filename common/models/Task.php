@@ -114,12 +114,18 @@ class Task extends \yii\db\ActiveRecord
     {
         $parentFields =  parent::fields();
         $modelFields = [
-            'created_at'=> function(){
+            'created_at'=> function() {
                 if (isset($this->created_at)){
                     return Yii::$app->formatter->asDatetime($this->created_at);
                 }
 
                 return null;
+            },
+            'priority_id' => function () {
+                return TaskPriority::getPriorityName()[$this->priority_id];
+            },
+            'status_id' => function () {
+                return $this->status->name;
             }
         ];
 

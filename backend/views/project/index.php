@@ -27,7 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'name',
+            [
+                'attribute' => 'name',
+                'format' => 'raw',
+                'value' => function (\common\models\Project $model) {
+                    return Html::a($model->name, ['project/view', 'id' => $model->id]);
+                }
+            ],
             'user_id',
             'project_status_id',
             'created_at',

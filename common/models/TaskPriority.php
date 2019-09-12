@@ -58,9 +58,9 @@ class TaskPriority extends \yii\db\ActiveRecord
     public static function getPriorityName()
     {
         return [
-            self::LOW_ID=>'Низкий',
-            self::NORMAL_ID=>'Нормальный',
-            self::HIGH_ID=>'Высокий',
+            self::LOW_ID => 'Незначительный',
+            self::NORMAL_ID => 'Нормальный',
+            self::HIGH_ID => 'Высокий',
         ];
     }
 }

@@ -42,17 +42,16 @@ $config =  [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
-//            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
                 [
-                    'class' => \yii\rest\UrlRule::class,
                     'controller' => 'task',
+                    'class' => \yii\rest\UrlRule::class,
                     //отключим трансформацию task в tasks
 //                    'pluralize' => false,
                     'extraPatterns' => [
                         //'METHOD action' => 'actionFunction',
-                        'GET random/<count>' => 'random',
+                        'POST random' => 'random',
                     ],
                 ]
             ],
