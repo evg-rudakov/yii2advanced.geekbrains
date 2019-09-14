@@ -6,9 +6,6 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Task */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $authors \common\models\User[] */
-/* @var $projects \common\models\Project[] */
-
 ?>
 
 <div class="task-form">
@@ -19,13 +16,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'author_id')->dropDownList($authors) ?>
+    <?= $form->field($model, 'author_id')->textInput() ?>
 
-    <?= $form->field($model, 'status_id')->dropDownList(\common\models\TaskStatus::getStatusName()) ?>
+    <?= $form->field($model, 'status_id')->textInput() ?>
 
-    <?= $form->field($model, 'priority_id')->dropDownList(\common\models\TaskPriority::getPriorityName()) ?>
+    <?= $form->field($model, 'priority_id')->textInput() ?>
 
-    <?= $form->field($model, 'project_id')->dropDownList($projects) ?>
+    <?= $form->field($model, 'created_at')->textInput() ?>
+
+    <?= $form->field($model, 'updated_at')->textInput() ?>
+
+    <?= $form->field($model, 'project_id')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -29,16 +29,16 @@ class TaskController extends Controller
                 ],
             ],
             'verbFilter' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => $this->verbs(),
             ],
             'authenticator' => [
-                'class' => CompositeAuth::className(),
+                'class' => CompositeAuth::class,
             ],
 
             //огранитель запросв
             'rateLimiter' => [
-                'class' => RateLimiter::className(),
+                'class' => RateLimiter::class,
             ],
         ];
     }

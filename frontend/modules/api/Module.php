@@ -9,6 +9,7 @@
 namespace frontend\modules\api;
 
 use yii\web\ErrorHandler;
+use yii\web\GroupUrlRule;
 
 class Module extends \yii\base\Module
 {
@@ -43,6 +44,12 @@ class Module extends \yii\base\Module
         $handler = $this->get('response');
         \Yii::$app->set('response', $handler);
 
+    }
+
+    public function bootstrap($app)
+    {
+        $routes = include(__DIR__ . '/routes.php');
+        $app->urlManager->rules[] = new GroupUrlRule($routes);
     }
 
 }

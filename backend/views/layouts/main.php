@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use backend\assets\AppAsset;
@@ -41,6 +42,9 @@ AppAsset::register($this);
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
+        $menuItems[] = ['label' => 'Задачи', 'url' => ['task/index']];
+        $menuItems[] = ['label' => 'Проекты', 'url' => ['project/index']];
+        $menuItems[] = ['label' => 'Пользователи', 'url' => ['user/index']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
@@ -49,6 +53,7 @@ AppAsset::register($this);
             )
             . Html::endForm()
             . '</li>';
+
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],

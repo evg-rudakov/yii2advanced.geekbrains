@@ -2,9 +2,13 @@
 
 namespace backend\controllers;
 
+use common\models\Project;
+use common\models\ProjectStatus;
+use common\models\User;
 use Yii;
 use common\models\Task;
 use backend\models\TaskSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -72,6 +76,9 @@ class TaskController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'authors' => ArrayHelper::map(
+                User::getActiveUsers(), 'id', 'email'),
+            'projects' => ArrayHelper::map(Project::getActiveProjects(), 'id', 'name')
         ]);
     }
 
@@ -92,6 +99,10 @@ class TaskController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'authors'=>ArrayHelper::map(
+                User::getActiveUsers(), 'id', 'email'),
+            'projects' => ArrayHelper::map(Project::getActiveProjects(), 'id', 'name')
+
         ]);
     }
 

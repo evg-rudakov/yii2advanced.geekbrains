@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use common\models\Project;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Project */
@@ -33,10 +34,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'user_id',
-            'project_status_id',
-            'created_at',
-            'updated_at',
+            [
+                'label'=>'Автор',
+                'value'=> function(Project $model) {
+                    return $model->author->username;
+
+                }
+            ],
+            [
+                'label'=>'Статус',
+                'value'=> function(Project $model) {
+                    return $model->projectStatus->name;
+
+                }
+            ],
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

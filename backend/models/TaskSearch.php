@@ -11,6 +11,7 @@ use common\models\Task;
  */
 class TaskSearch extends Task
 {
+    public $authorEmail;
     /**
      * {@inheritdoc}
      */
@@ -19,6 +20,7 @@ class TaskSearch extends Task
         return [
             [['id', 'author_id', 'status_id', 'priority_id'], 'integer'],
             [['name', 'description'], 'safe'],
+            [['authorEmail'], 'string']
         ];
     }
 
@@ -40,7 +42,7 @@ class TaskSearch extends Task
      */
     public function search($params)
     {
-        $query = Task::find();
+        $query = Task::find()->joinWith('author');
 
         // add conditions that should always apply here
 
@@ -65,7 +67,8 @@ class TaskSearch extends Task
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description]);
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'user.email', $this->authorEmail]);
 
         return $dataProvider;
     }

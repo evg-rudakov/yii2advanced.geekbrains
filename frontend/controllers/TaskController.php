@@ -1,103 +1,127 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: evg
- * Date: 11/09/2019
- * Time: 15:28
- */
 
 namespace frontend\controllers;
 
-
+use Yii;
 use common\models\Task;
-use yii\data\ActiveDataProvider;
-use yii\filters\auth\HttpBearerAuth;
-use yii\rest\ActiveController;
+use frontend\models\TaskSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 
-class TaskController extends ActiveController
+/**
+ * TaskController implements the CRUD actions for Task model.
+ */
+class TaskController extends Controller
 {
-    public $modelClass = Task::class;
-
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
-        $behaviors = parent::behaviors();
-        //подключаем авторизацию через HttpBearerAuth
-        //каждый запрос к этому контроллеру будет фильтроваться через это поведение
-        //authenticator - имеет больший приоритет чем ACF
-        $behaviors['authenticator'] = [
-//            'class' => QueryParamAuth::class,
-            'class' => HttpBearerAuth::class,
-//            'class' => HttpBasicAuth::::class //логин-пароль
-//            'tokenParam' => 'q',
-            //нужно исключить action которые используются в accessFilter ACF
-//            'except' => ['loign']
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
         ];
-        return $behaviors;
     }
 
-    public function actions()
+    /**
+     * Lists all Task models.
+     * @return mixed
+     */
+    public function actionIndex()
     {
-        $actions = parent::actions();
+        $searchModel = new TaskSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        // отключить действия "delete" и "create"
-        unset($actions['delete'], $actions['create']);
-
-        // настроить подготовку провайдера данных с помощью метода "prepareDataProvider()"
-        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
-
-        return $actions;
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
-
-
-    public function actionRandom($count=5)
+    /**
+     * Displays a single Task model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
     {
-        $output = [];
-        $errors = [];
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
 
-        \Yii::$app->db->beginTransaction();
-        try {
-            for ($i = 0; $i < $count; $i++) {
-                $task = new Task();
-                $task->description = \Yii::$app->security->generateRandomString(3);
-                $task->author_id = 2;
-                $task->name = \Yii::$app->security->generateRandomString(3);
+    /**
+     * Creates a new Task model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new Task();
 
-                if ($i == 2) {
-                    $task->name = '';
-                }
-                $task->status_id = 1;
-                $task->priority_id = 1;
-                if ($task->save()) {
-                    $output[$i] = $task->attributes;
-                } else {
-                    $errors[$i] = $task->errors;
-                }
-            }
-
-            $result = empty($errors);
-            if ($result === true) {
-                \Yii::$app->db->transaction->commit();
-            } else {
-                \Yii::$app->db->transaction->rollBack();
-            }
-
-            return ['result' => empty($errors), 'errors' => $errors, 'output' => $output];
-        } catch (\Throwable $exception) {
-            \Yii::$app->db->transaction->rollBack();
-            return ['result' => false, 'error_message' => $exception->getMessage()];
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
-    public function prepareDataProvider()
+    /**
+     * Updates an existing Task model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdate($id)
     {
-        return new ActiveDataProvider([
-            'query' => Task::find(),
-            'pagination' => [
-                'pageSize' => 100,
-                'pageSizeParam'=>'count'
-            ],
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
         ]);
+    }
+
+    /**
+     * Deletes an existing Task model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the Task model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Task the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Task::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

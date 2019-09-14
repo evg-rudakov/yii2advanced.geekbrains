@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\models\Task;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\TaskSearch */
@@ -24,13 +25,31 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'name',
             'description:ntext',
-            'author_id',
-            'status_id',
+            [
+                'attribute' => 'authorEmail',
+                'value' => function (Task $model) {
+                    return $model->author->username;
+                }
+            ],
+            [
+                'attribute' => 'status_id',
+                'filter' => \common\models\TaskStatus::getStatusName(),
+                'value' => function (Task $model) {
+                    return $model->status->name;
+                }
+            ],
+            [
+                'attribute' => 'projectName',
+                'value' => function (Task $model) {
+                    if (!empty($model->project)) {
+                        return $model->project->name;
+                    }
+                    return null;
+                }
+            ],
             //'priority_id',
 
             ['class' => 'yii\grid\ActionColumn'],

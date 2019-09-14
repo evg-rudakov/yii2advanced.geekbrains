@@ -1,19 +1,16 @@
 <?php
 
-namespace backend\controllers;
+namespace frontend\controllers;
 
-use backend\models\TaskSearch;
 use Yii;
 use common\models\Project;
-use backend\models\ProjectSearch;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
+use common\models\ProjectSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * TaskController implements the CRUD actions for Project model.
+ * ProjectController implements the CRUD actions for Project model.
  */
 class ProjectController extends Controller
 {
@@ -55,16 +52,9 @@ class ProjectController extends Controller
      */
     public function actionView($id)
     {
-        $taskSearchModel = new TaskSearch();
-        $taskDataProvider = $taskSearchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'taskSearchModel'=>$taskSearchModel,
-            'taskDataProvider'=>$taskDataProvider
         ]);
-
-
     }
 
     /**
