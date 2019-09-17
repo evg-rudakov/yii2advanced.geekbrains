@@ -44,29 +44,20 @@ $config =  [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                [
-                    'controller' => 'task',
-                    'class' => \yii\rest\UrlRule::class,
-                    //отключим трансформацию task в tasks
-//                    'pluralize' => false,
-                    'extraPatterns' => [
-                        //'METHOD action' => 'actionFunction',
-                        'POST random/<count>' => 'random',
-                    ],
-                ]
+                '/'=> 'project/index'
             ],
         ],
-        'view'=>[
-            'theme' => [
-                'basePath' => '@app/themes/first',  //базовая директория со стилизованными ресурсами (CSS, JS, изображения)
-                'baseUrl' => '@web/themes/first',   // базовый адрес доступа к стилизованным ресурсам.
-                'pathMap' => [  //правила замены файлов view
-                    '@app/views/user' => '@app/themes/first/user',
-                    '@app/modules' => '@app/themes/first/modules',
-                    '@app/widgets' => '@app/themes/first/widgets',
-                ],
-            ]
-        ],
+//        'view'=>[
+//            'theme' => [
+//                'basePath' => '@app/themes/first',  //базовая директория со стилизованными ресурсами (CSS, JS, изображения)
+//                'baseUrl' => '@web/themes/first',   // базовый адрес доступа к стилизованным ресурсам.
+//                'pathMap' => [  //правила замены файлов view
+//                    '@app/views/user' => '@app/themes/first/user',
+//                    '@app/modules' => '@app/themes/first/modules',
+//                    '@app/widgets' => '@app/themes/first/widgets',
+//                ],
+//            ]
+//        ],
 
     ],
     'modules' => [

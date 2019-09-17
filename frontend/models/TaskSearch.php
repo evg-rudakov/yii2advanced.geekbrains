@@ -35,12 +35,18 @@ class TaskSearch extends Task
      * Creates data provider instance with search query applied
      *
      * @param array $params
+     * @param array $project_id
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $project_id = null)
     {
-        $query = Task::find();
+        $query = Task::find()->joinWith('project');
+
+        if (isset($project_id)) {
+            $query->where(['project_id'=>$project_id]);
+        }
+
 
         // add conditions that should always apply here
 
@@ -72,4 +78,5 @@ class TaskSearch extends Task
 
         return $dataProvider;
     }
+
 }

@@ -5,8 +5,10 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Project */
+/* @var $taskDataProvider \yii\data\ActiveDataProvider */
+/* @var $taskSearch \frontend\models\TaskSearch */
 
-$this->title = $model->name;
+$this->title = 'Задачи проекта '.$model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Projects', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -14,28 +16,20 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="project-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
+    <?= \yii\grid\GridView::widget([
+        'filterModel' => $taskSearch,
+        'dataProvider' => $taskDataProvider,
+        'columns' => [
             'id',
             'name',
-            'user_id',
-            'project_status_id',
-            'created_at',
-            'updated_at',
-        ],
+            'created_at:datetime',
+            'description',
+            'status.name',
+            'priority.name',
+            'author.email',
+        ]
     ]) ?>
+
+
 
 </div>
