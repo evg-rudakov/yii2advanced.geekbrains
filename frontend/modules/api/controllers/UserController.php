@@ -10,16 +10,17 @@ namespace frontend\modules\api\controllers;
 
 
 use common\models\User;
+use frontend\models\SignupForm;
 use yii\rest\ActiveController;
 use yii\rest\Controller;
 
 class UserController extends ActiveController
 {
-
     public $modelClass = User::class;
-    public function singUp()
+
+    public function actionSignUp()
     {
-        $a=1;
+        $post = \Yii::$app->request->post();
 
     }
 

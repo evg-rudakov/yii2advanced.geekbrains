@@ -8,16 +8,26 @@
 
 namespace frontend\modules\api;
 
+use yii\base\BootstrapInterface;
 use yii\web\ErrorHandler;
 use yii\web\GroupUrlRule;
 
-class Module extends \yii\base\Module
+class Module extends \yii\base\Module implements BootstrapInterface
 {
-    public $controllerNamespace = 'frontend\modules\api\controllers';
+    public $controllerNamespace = 'frontend\\modules\\api\\controllers';
+
+    public function bootstrap($app)
+    {
+        $routes = include(__DIR__ . '/routes.php');
+        $app->getUrlManager()->rules[] = new GroupUrlRule($routes);
+    }
+
 
     public function init()
     {
         parent::init();
+
+        $this->defaultRoute = 'tasks';
 
         \Yii::configure($this, [
             'components' => [
@@ -40,16 +50,19 @@ class Module extends \yii\base\Module
             ],
         ]);
 
+//        $routes = include(__DIR__ . '/routes.php');
+//        \Yii::$app->urlManager->rules[] = new GroupUrlRule($routes);
+
+
         /** @var ErrorHandler $handler */
         $handler = $this->get('response');
         \Yii::$app->set('response', $handler);
 
     }
 
-    public function bootstrap($app)
-    {
-        $routes = include(__DIR__ . '/routes.php');
-        $app->urlManager->rules[] = new GroupUrlRule($routes);
-    }
+
+
+
+
 
 }

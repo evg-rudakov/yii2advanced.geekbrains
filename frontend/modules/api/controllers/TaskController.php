@@ -7,44 +7,11 @@
  */
 namespace frontend\modules\api\controllers;
 
-use yii\db\Exception;
-use yii\filters\auth\CompositeAuth;
-use yii\filters\ContentNegotiator;
-use yii\filters\RateLimiter;
-use yii\filters\VerbFilter;
-use yii\rest\Controller;
-use yii\web\Response;
+use common\models\Task;
+use yii\rest\ActiveController;
 
-class TaskController extends Controller
+class TaskController extends ActiveController
 {
 
-    public function behaviors()
-    {
-        return [
-            'contentNegotiator' => [
-                'class' => ContentNegotiator::className(),
-                'formats' => [
-                    'application/json' => Response::FORMAT_JSON,
-                    'application/xml' => Response::FORMAT_XML,
-                ],
-            ],
-            'verbFilter' => [
-                'class' => VerbFilter::class,
-                'actions' => $this->verbs(),
-            ],
-            'authenticator' => [
-                'class' => CompositeAuth::class,
-            ],
-
-            //огранитель запросв
-            'rateLimiter' => [
-                'class' => RateLimiter::class,
-            ],
-        ];
-    }
-    public function actionIndex()
-    {
-        throw new Exception('ewqweqeqweqw');
-
-    }
+    public $modelClass = Task::class;
 }

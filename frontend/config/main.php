@@ -9,7 +9,10 @@ $params = array_merge(
 $config =  [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'api',
+        'log'
+    ],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
@@ -43,8 +46,25 @@ $config =  [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+//            'enableStrictParsing' => true,
             'rules' => [
-                '/'=> 'project/index'
+                '/'=> 'project/index',
+//                [
+//                    'class' => \yii\rest\UrlRule::class,
+//                    'controller' => 'api/user',
+//                    'pluralize' => true,
+//                    'extraPatterns' => [
+//                        // actions
+//                        'POST sign-up' => 'sign-up',
+//                        'POST sign-in' => 'sign-in',
+//                        'GET me' => 'me',
+//                    ],
+//                ],
+//                [
+//                    'class' => \yii\rest\UrlRule::class,
+//                    'controller' => 'api/task',
+//                    'pluralize' => true,
+//                ],
             ],
         ],
 //        'view'=>[
