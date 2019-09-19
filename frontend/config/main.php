@@ -49,22 +49,23 @@ $config =  [
 //            'enableStrictParsing' => true,
             'rules' => [
                 '/'=> 'project/index',
-//                [
-//                    'class' => \yii\rest\UrlRule::class,
-//                    'controller' => 'api/user',
-//                    'pluralize' => true,
-//                    'extraPatterns' => [
-//                        // actions
-//                        'POST sign-up' => 'sign-up',
-//                        'POST sign-in' => 'sign-in',
-//                        'GET me' => 'me',
-//                    ],
-//                ],
-//                [
-//                    'class' => \yii\rest\UrlRule::class,
-//                    'controller' => 'api/task',
-//                    'pluralize' => true,
-//                ],
+                 [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'api/user',
+                    'pluralize' => true,
+                    'extraPatterns' => [
+                        // actions
+                        'GET me' => 'me',
+
+                        'GET <id>/tasks' => 'tasks',
+                        'GET tasks' => 'tasks',
+                    ],
+                ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'api/task',
+                    'pluralize' => true,
+                ],
             ],
         ],
 //        'view'=>[
