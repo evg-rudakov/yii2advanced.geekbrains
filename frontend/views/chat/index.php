@@ -7,4 +7,4 @@
  */
 /** @var string $username */
 ?>
-<?=\common\components\chatWidget\ChatWidget::widget();?>
+<?= \common\widgets\chatWidget\ChatWidget::widget(); ?>

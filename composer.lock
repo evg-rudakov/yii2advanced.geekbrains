@@ -4,8 +4,71 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d87f61801c3ea2003ae3763453079b2",
+    "content-hash": "0c7d252412fd7a2da268a0ff16831438",
     "packages": [
+        {
+            "name": "2amigos/yii2-editable-widget",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2amigos/yii2-editable-widget.git",
+                "reference": "d9af5c0febfa0188bcb7a120fd6be567d3d93cb1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2amigos/yii2-editable-widget/zipball/d9af5c0febfa0188bcb7a120fd6be567d3d93cb1",
+                "reference": "d9af5c0febfa0188bcb7a120fd6be567d3d93cb1",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/select2": "~4.0",
+                "yiisoft/yii2": "~2.0.5",
+                "yiisoft/yii2-bootstrap": "~2.0.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.0",
+                "phpunit/phpunit": "4.*",
+                "scrutinizer/ocular": "~1.1"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "asset-installer-paths": {
+                    "bower-asset-library": "vendor/bower"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "dosamigos\\editable\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "2amigOS! Consulting Group",
+                    "email": "hola@2amigos.us",
+                    "homepage": "http://2amigos.us",
+                    "role": "Developer"
+                }
+            ],
+            "description": "X-Editable widget for Yii2.",
+            "homepage": "http://yiiwheels.com/extension/editable-widget",
+            "keywords": [
+                "2amigos",
+                "extension",
+                "widget",
+                "x-editable",
+                "yii",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2017-07-27T05:58:31+00:00"
+        },
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.4.1",
@@ -84,6 +147,25 @@
                 "shasum": null
             },
             "type": "bower-asset"
+        },
+        {
+            "name": "bower-asset/select2",
+            "version": "4.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/select2/select2.git",
+                "reference": "c4b730a0a014ea38641bfbcb245e4b7aa0ca5657"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/select2/select2/zipball/c4b730a0a014ea38641bfbcb245e4b7aa0ca5657",
+                "reference": "c4b730a0a014ea38641bfbcb245e4b7aa0ca5657",
+                "shasum": null
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "bower-asset/yii2-pjax",

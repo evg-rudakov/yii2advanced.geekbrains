@@ -112,4 +112,15 @@ class Project extends \yii\db\ActiveRecord
         return self::find()->where('project_status_id != :finished_status_id', [":finished_status_id" => ProjectStatus::FINISHED_ID])->all();
 
     }
+
+    public function AfterSave($insert, $changedAttribute)
+    {
+        if ($insert) {
+            ChatLog::saveLog([
+                'username' => Yii::$app->user->identity->username,
+                'message' => 'Создал новый проект #'.$this->id,
+                'project_id'=>$this->id,
+            ]);
+        }
+    }
 }

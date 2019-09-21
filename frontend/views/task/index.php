@@ -39,6 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+    <?=\common\widgets\chatWidget\ChatWidget::widget();?>
 
 
 </div>

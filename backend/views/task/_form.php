@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Task */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $authors \common\models\User[] */
+/* @var $activeUsers \common\models\User[] */
 /* @var $projects \common\models\Project[] */
 
 ?>
@@ -19,7 +19,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'author_id')->dropDownList($authors) ?>
+    <?= $form->field($model, 'author_id')->dropDownList($activeUsers) ?>
+
+    <?= $form->field($model, 'executor_id')->dropDownList($activeUsers) ?>
+
+    <?= $form->field($model, 'accountable_id')->dropDownList($activeUsers) ?>
 
     <?= $form->field($model, 'status_id')->dropDownList(\common\models\TaskStatus::getStatusName()) ?>
 

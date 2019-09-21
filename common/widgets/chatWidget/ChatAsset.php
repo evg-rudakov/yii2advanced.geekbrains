@@ -6,18 +6,20 @@
  * Time: 11:27
  */
 
-namespace common\components\chatWidget;
+namespace common\widgets\chatWidget;
 
 
-use yii\bootstrap\BootstrapAsset;
 use yii\web\AssetBundle;
+use yii\web\YiiAsset;
 
 class ChatAsset extends AssetBundle
 {
-    public $sourcePath = '@common/components/chatWidget/assets';
+    public $sourcePath = (__DIR__ . '/assets');
     public $js = ['js/chat.js'];
+    public $css = ['css/chat.css'];
 
     public $depends = [
-        BootstrapAsset::class
+        YiiAsset::class
     ];
+
 }

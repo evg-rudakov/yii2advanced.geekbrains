@@ -22,6 +22,10 @@ $config =  [
                 'charset' => 'UTF-8'
             ],
         ],
+        'formatter' => [
+            'dateFormat' => 'php:d.m.Y',
+            'datetimeFormat' => 'php:d.m.Y H:i:s',
+        ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
@@ -102,6 +106,9 @@ if (YII_ENV_DEV) {
         'class' => 'yii\gii\Module',
         'allowedIPs' => ['*']
     ];
+
+    $config['components']['assetManager']['forceCopy'] = true;
+
 }
 
 return $config;

@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'author.email',
         ]
     ]) ?>
+    <?=\common\widgets\chatWidget\ChatWidget::widget(['project_id' => $model->id]);?>
 
 
 

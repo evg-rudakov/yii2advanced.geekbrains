@@ -3,17 +3,19 @@
 namespace common\models;
 
 use Yii;
-use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "chat_log".
  *
  * @property int $id
+ * @property int $project_id
+ * @property int $task_id
  * @property string $username
  * @property string $message
  * @property string $created_at
  */
-class ChatLog extends \yii\db\ActiveRecord
+class ChatLog extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -29,10 +31,12 @@ class ChatLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['project_id', 'task_id'], 'integer'],
             ['created_at', 'safe'],
-            [['username', 'message', 'created_at'], 'string', 'max' => 255],
+            [['username', 'message'], 'string', 'max' => 255],
         ];
     }
+
 
 
     /**
@@ -48,15 +52,18 @@ class ChatLog extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function saveLog(string $msg)
+    public static function saveLog(array $msg)
     {
         try {
-            $model = new self(json_decode($msg, true));
+            $model = new ChatLog();
+            $model->username = $msg['username'];
+            $model->message = $msg['message'];
+            $model->project_id = $msg['project_id'] ?? null;
+            $model->task_id = $msg['task_id'] ?? null;
             $model->created_at = time();
             $model->save();
         } catch (\Throwable $exception) {
             Yii::error($exception->getMessage());
         }
-
     }
 }
