@@ -24,7 +24,17 @@ class ChatWidget extends Widget
      */
     public function init()
     {
+        if (\Yii::$app->user->isGuest) {
+            $username = 'guest' . time();
+        } else {
+            $username = \Yii::$app->user->identity->username;
+        }
+
         ChatAsset::register($this->view);
+        $this->view->registerMetaTag(['name'=>'chat-widget-project-id', 'content'=>$this->project_id]);
+        $this->view->registerMetaTag(['name'=>'chat-widget-task-id', 'content'=>$this->task_id]);
+        $this->view->registerMetaTag(['name'=>'chat-widget-username', 'content'=>$username]);
+
         parent::init();
     }
 
@@ -33,13 +43,8 @@ class ChatWidget extends Widget
      */
     public function run()
     {
-        if (\Yii::$app->user->isGuest) {
-            $username = 'guest' . time();
-        } else {
-            $username = \Yii::$app->user->identity->username;
-        }
-        return $this->render('index', [
-            'username' => $username]);
+
+        return $this->render('index');
     }
 
 }
