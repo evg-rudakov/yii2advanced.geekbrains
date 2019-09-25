@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\components\behaviors\ChatLogBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -66,6 +67,10 @@ class Project extends \yii\db\ActiveRecord
                     'value' => time(),
                 ],
             ],
+
+            [
+                'class'=>ChatLogBehavior::class
+            ]
         ];
     }
 

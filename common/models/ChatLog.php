@@ -92,7 +92,8 @@ class ChatLog extends ActiveRecord
             return false;
         }
     }
-    public function asJson()
+
+    public function toJson()
     {
         return json_encode($this->toArray());
     }
@@ -100,8 +101,8 @@ class ChatLog extends ActiveRecord
     public function fields()
     {
         return array_merge(parent::fields(), [
-            'created_datetime'=> function(){
-            return Yii::$app->formatter->asDatetime($this->created_at);
+            'created_datetime' => function () {
+                return Yii::$app->formatter->asDatetime($this->created_at);
             }
         ]);
     }
