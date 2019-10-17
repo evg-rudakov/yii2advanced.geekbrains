@@ -30,7 +30,7 @@ class ChatLog extends \yii\db\ActiveRecord
     {
         return [
             ['created_at', 'safe'],
-            [['username', 'message', 'created_at'], 'string', 'max' => 255],
+            [['username', 'message'], 'string', 'max' => 255],
         ];
     }
 
@@ -48,12 +48,16 @@ class ChatLog extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function saveLog(string $msg)
+    public static function saveLog(array $msg)
     {
         try {
-            $model = new self(json_decode($msg, true));
+            $model = new self([
+                'username' => $msg['username'],
+                'message'=>$msg['message'],
+            ]);
             $model->created_at = time();
             $model->save();
+
         } catch (\Throwable $exception) {
             Yii::error($exception->getMessage());
         }

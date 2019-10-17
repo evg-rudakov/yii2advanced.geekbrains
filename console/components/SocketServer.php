@@ -12,6 +12,7 @@ namespace console\components;
 use common\models\ChatLog;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
+use yii\base\InvalidArgumentException;
 
 class SocketServer implements MessageComponentInterface
 {
@@ -28,45 +29,61 @@ class SocketServer implements MessageComponentInterface
     {
         $this->clients->attach($conn);
         $this->sendWelcomeMessage($conn);
-        $this->showHistory($conn);
-        echo "New connection! ({$conn->resourceId})\n";
+        var_dump("New connection! ({$conn->resourceId})");
     }
 
-    private function showHistory($conn){
-        $chatLogs = ChatLog::find()->all();
-        foreach ($chatLogs as $log) {
-            $msg = json_encode($log->attributes);
-            $msg['created_at'] = \Yii::$app->formatter->asDatetime($log->created_at);
-            $conn->send($msg);
+    public function onMessage(ConnectionInterface $from, $message)
+    {
+        var_dump($message);
+        var_dump('clients:' . count($this->clients));
+
+        $message = json_decode($message, true);
+
+        try {
+            $type = $message['type'];
+        } catch (\Throwable $exception) {
+            throw new InvalidArgumentException('No type');
         }
+
+
+        if ($type === 'chat') {
+            $this->sendMessageToAll($message);
+        } elseif ($type === 'hello') {
+            $this->sendClientEnteredMessage($message);
+        }
+
+    }
+
+    private function sendMessageToAll(array $message)
+    {
+        $message['created_at'] = \Yii::$app->formatter->asDatetime(time(), 'php:d.m.Y h:i:s');
+
+        ChatLog::saveLog($message);
+
+        foreach ($this->clients as $client) {
+
+            $client->send(json_encode($message));
+        }
+    }
+
+    private function sendClientEnteredMessage(array $message)
+    {
+        $clientUserName = $message['username'];
+        $message['username'] = 'system';
+        $message['message'] = "$clientUserName зашел в чат";
+
+        $this->sendMessageToAll($message);
     }
 
     private function sendWelcomeMessage(ConnectionInterface $conn)
     {
-        $conn->send(json_encode([
-            'message'=>'Всем привет',
-            'username'=>'Чат студентов geekbrains.ru',
-            'created_at'=>\Yii::$app->formatter->asDatetime(time())]));
-    }
+        $message = [
+            'created_at' => \Yii::$app->formatter->asDatetime(time(), 'php:d.m.Y h:i:s'),
+            'username' => 'system',
+            'message' => 'Добро пожаловать в чат geekbrains.ru'
+        ];
 
-    public function onMessage(ConnectionInterface $from, $msg)
-    {
-        $numRecv = count($this->clients) - 1;
-        var_dump($msg);
-        var_dump('clients:'.count($this->clients));
-        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
-            , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
-
-        $msg = json_decode($msg, true);
-        $msg['created_at'] = \Yii::$app->formatter->asDatetime(time());
-        $msg = json_encode($msg);
-        ChatLog::saveLog($msg);
-
-        foreach ($this->clients as $client) {
-            // The sender is not the receiver, send to each client connected
-
-            $client->send($msg);
-        }
+        $conn->send(json_encode($message));
     }
 
     public function onClose(ConnectionInterface $conn)
