@@ -39,7 +39,6 @@ class SignupFormTest extends \Codeception\Test\Unit
             'email' => 'some_email@example.com',
             'status' => \common\models\User::STATUS_INACTIVE
         ]);
-
         $this->tester->seeEmailIsSent();
 
         $mail = $this->tester->grabLastSentEmail();
