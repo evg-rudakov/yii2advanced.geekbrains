@@ -6,6 +6,7 @@
  * Time: 18:26
  */
 /** @var string $username */
+
 ?>
     <div id="chat" style="min-height: 100px;"></div>
     <div id="response" style="color:#D00"></div>

@@ -41,6 +41,7 @@ class m190911_120908_create_task_priority_status_table extends Migration
             'task_id' => $this->integer()->notNull(),
             'tag_name' => $this->string(255)->notNull(),
         ]);
+
         $this->addForeignKey(
             'fk_tag_task_id',
             'tag',
@@ -56,6 +57,7 @@ class m190911_120908_create_task_priority_status_table extends Migration
             'task_id' => $this->integer()->notNull(),
             'text' => $this->text()->notNull(),
         ]);
+
         $this->addForeignKey(
             'fk_comment_task_id',
             'comment',
@@ -87,9 +89,16 @@ class m190911_120908_create_task_priority_status_table extends Migration
      */
     public function safeDown()
     {
-        echo "m190911_120908_table cannot be reverted.\n";
+        $this->dropForeignKey('fk_task_priority_id', 'task');
+        $this->dropForeignKey('fk_comment_task_id', 'comment');
+        $this->dropForeignKey('fk_tag_task_id', 'tag');
+        $this->dropForeignKey('fk_task_status_id', 'task');
 
-        return false;
+        $this->dropTable('fk_task_priority_id');
+        $this->dropTable('fk_comment_task_id');
+        $this->dropTable('fk_tag_task_id');
+        $this->dropTable('fk_task_status_id');
+
     }
 
     /*
