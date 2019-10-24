@@ -45,6 +45,7 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Задачи', 'url' => ['task/index']];
         $menuItems[] = ['label' => 'Проекты', 'url' => ['project/index']];
         $menuItems[] = ['label' => 'Пользователи', 'url' => ['user/index']];
+        $menuItems[] = ['label' => 'Комментарии', 'url' => ['comment/index']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(

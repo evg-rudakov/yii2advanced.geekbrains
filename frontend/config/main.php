@@ -48,7 +48,7 @@ $config =  [
                     'controller' => 'task',
                     'class' => \yii\rest\UrlRule::class,
                     //отключим трансформацию task в tasks
-//                    'pluralize' => false,
+                    'pluralize' => false,
                     'extraPatterns' => [
                         //'METHOD action' => 'actionFunction',
                         'POST random/<count>' => 'random',

@@ -29,12 +29,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'description:ntext',
-            'author_id',
-            'status_id',
+            'status.name',
             //'priority_id',
-            //'created_at',
-            //'updated_at',
-            //'project_id',
+            'created_at:datetime',
+            'updated_at:datetime',
+            [
+                'attribute' => 'projectName',
+                'value' => function(\common\models\Task $model) {
+                    return $model->project->name;
+                }
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

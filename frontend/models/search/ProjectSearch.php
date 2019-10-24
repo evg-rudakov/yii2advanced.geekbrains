@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models;
+namespace frontend\models\search;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -11,8 +11,6 @@ use common\models\Project;
  */
 class ProjectSearch extends Project
 {
-    public $authorEmail;
-    public $projectName;
     /**
      * {@inheritdoc}
      */
@@ -21,7 +19,6 @@ class ProjectSearch extends Project
         return [
             [['id', 'author_id', 'project_status_id', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'safe'],
-            [['authorEmail', 'projectName'], 'string']
         ];
     }
 
@@ -43,7 +40,7 @@ class ProjectSearch extends Project
      */
     public function search($params)
     {
-        $query = Project::find();
+        $query = Project::find()->where(['author_id'=>\Yii::$app->user->id]);
 
         // add conditions that should always apply here
 
@@ -69,8 +66,6 @@ class ProjectSearch extends Project
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
-        $query->andFilterWhere(['like', 'name', $this->authorEmail]);
-        $query->andFilterWhere(['like', 'name', $this->projectName]);
 
         return $dataProvider;
     }
