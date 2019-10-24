@@ -53,10 +53,10 @@ class SocketServer implements MessageComponentInterface
         $chatLogs = ChatLog::find()->andWhere([
             'project_id' => $project_id,
             'task_id' => $task_id
-        ])->orderBy(['created_at' => SORT_DESC])->all();
+        ])->limit(10)->orderBy(['created_at' => SORT_ASC])->all();
 
         foreach ($chatLogs as $chatLog) {
-            $from->send($chatLog->asJson());
+            $from->send($chatLog->toJson());
         }
 
     }
@@ -84,7 +84,7 @@ class SocketServer implements MessageComponentInterface
         $chatLog->save();
 
         foreach ($this->clients as $client) {
-            $client->send($chatLog->asJson());
+            $client->send($chatLog->toJson());
         }
     }
 

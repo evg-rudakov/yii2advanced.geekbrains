@@ -2,9 +2,8 @@ let username = $('meta[name="chat-widget-username"]').attr('content');
 let project_id = $('meta[name="chat-widget-project-id"]').attr('content');
 let task_id = $('meta[name="chat-widget-task-id"]').attr('content');
 let chat = new WebSocket('ws://yii2advanced.geekbrains:8080');
-
+//<meta name="chat-widget-project-id" content="3">
 chat.onmessage = function (e) {
-    debugger;
     if (e.data === 'history') {
         chat.send(JSON.stringify({
             'action': 'history',
@@ -31,7 +30,11 @@ function sendMessageToChat(e){
     $('#response').text('');
     console.log(e);
     let response = JSON.parse(e.data);
-    $('.js-messages-content').append('<div>' + response.created_datetime + ' <b>' + response.username + '</b>: ' + response.message + '</div>');
+    $('.js-messages-content').append('<div>' +
+        response.created_datetime +
+        ' <b>' + response.username +
+        '</b>: ' + response.message +
+        '</div>');
 }
 
 chat.onopen = function (e) {
