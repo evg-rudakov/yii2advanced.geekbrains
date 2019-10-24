@@ -53,7 +53,22 @@ $config =  [
                         //'METHOD action' => 'actionFunction',
                         'POST random/<count>' => 'random',
                     ],
-                ]
+                ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'api/user',
+                    'pluralize' => true,
+                    'extraPatterns' => [
+                        // actions
+                        'GET me' => 'me',
+                        'GET <id>/tasks' => 'tasks',
+                    ],
+                ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'api/task',
+                    'pluralize' => true,
+                ],
             ],
         ],
         'view'=>[
