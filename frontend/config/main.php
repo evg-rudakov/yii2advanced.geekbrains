@@ -49,10 +49,18 @@ $config =  [
 //            'enableStrictParsing' => true,
             'rules' => [
                 [
-                    'controller' => 'task',
+                    'controller' => 'api/task',
                     'class' => \yii\rest\UrlRule::class,
                     //отключим трансформацию task в tasks
-                    'pluralize' => false,
+                    'extraPatterns' => [
+                        //'METHOD action' => 'actionFunction',
+                        'POST random/<count>' => 'random',
+                    ],
+                ],
+                [
+                    'controller' => 'v1/task',
+                    'class' => \yii\rest\UrlRule::class,
+                    //отключим трансформацию task в tasks
                     'extraPatterns' => [
                         //'METHOD action' => 'actionFunction',
                         'POST random/<count>' => 'random',
@@ -61,17 +69,11 @@ $config =  [
                 [
                     'class' => \yii\rest\UrlRule::class,
                     'controller' => 'api/user',
-                    'pluralize' => true,
                     'extraPatterns' => [
                         // actions
                         'GET me' => 'me',
                         'GET <id>/tasks' => 'tasks',
                     ],
-                ],
-                [
-                    'class' => \yii\rest\UrlRule::class,
-                    'controller' => 'api/task',
-                    'pluralize' => true,
                 ],
             ],
         ],

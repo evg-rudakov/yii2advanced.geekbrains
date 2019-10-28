@@ -11,19 +11,29 @@ namespace frontend\modules\api\controllers;
 
 use common\models\Task;
 use common\models\User;
+use yii\data\ActiveDataProvider;
+use yii\filters\auth\CompositeAuth;
+use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
+use yii\filters\auth\QueryParamAuth;
 use yii\rest\ActiveController;
-use yii\web\ForbiddenHttpException;
+
 
 class UserController extends ActiveController
 {
 
+    public $modelClass = User::class;
+
     public function behaviors()
     {
-
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
-            'class' => HttpBearerAuth::class,
+            'class' => CompositeAuth::class,
+            'authMethods' => [
+                HttpBearerAuth::class,
+                HttpBasicAuth::class,
+                QueryParamAuth::class,
+            ],
             //нужно исключить action которые используются в accessFilter ACF
 //            'except' => ['create']
         ];
@@ -31,25 +41,20 @@ class UserController extends ActiveController
         return $behaviors;
 
     }
-    public $modelClass = User::class;
 
     public function actionMe()
     {
         return ['me' => \Yii::$app->user->identity];
     }
 
-    public function checkAccess($action, $model = null, $params = [])
-    {
-        if ($action === 'view') {
-            if ($model->id !== \Yii::$app->user->id) {
-                throw new ForbiddenHttpException('Нельзя другого пользователя смотреть');
-            }
-        }
-    }
-
-
     public function actionTasks($id)
     {
-        return Task::find()->where(['author_id'=>$id])->asArray()->all();
+        return new ActiveDataProvider([
+            'query' => Task::find()->where(['author_id'=>$id]),
+            'pagination' => [
+                'pageSize' => 3,
+            ],
+        ]);
     }
+
 }
