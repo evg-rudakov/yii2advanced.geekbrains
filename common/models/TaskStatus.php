@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "task_status".
@@ -60,12 +61,7 @@ class TaskStatus extends \yii\db\ActiveRecord
 
     public static function getStatusName()
     {
-        return [
-            self::NEW_ID => 'Новая',
-            self::IN_PROGRESS_ID => 'В работе',
-            self::ON_TESTING_ID => 'В тестировании',
-            self::READY_ID => 'Готово',
-            self::ARCHIVE_ID => 'Архивная',
-        ];
+        return ArrayHelper::map(TaskStatus::find()->asArray()->all(), 'id', 'name');
+
     }
 }

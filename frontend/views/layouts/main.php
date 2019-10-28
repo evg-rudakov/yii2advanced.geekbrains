@@ -35,12 +35,7 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    $menuItems = [
-        ['label' => 'Chat', 'url' => ['/chat/index']],
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
-    ];
+
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
@@ -53,7 +48,14 @@ AppAsset::register($this);
             )
             . Html::endForm()
             . '</li>';
+
+        $menuItems[] = ['label' => 'Мои задачи', 'url' => ['/task/index']];
+        $menuItems[] = ['label' => 'Мои проекты', 'url' => ['/project/index']];
+        $menuItems[] = ['label' => 'Мой аккунт', 'url' => ['/account']];
     }
+         $menuItems[] = ['label' => 'Home', 'url' => ['/site/index']];
+         $menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
+         $menuItems[] = ['label' => 'Contact', 'url' => ['/site/contact']];
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => $menuItems,

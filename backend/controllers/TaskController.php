@@ -74,10 +74,11 @@ class TaskController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+
         return $this->render('create', [
             'model' => $model,
             'authors' => ArrayHelper::map(
-                User::getActiveUsers(), 'id', 'email'),
+                User::findActiveUsers(['id', 'email'])->asArray()->all(), 'id', 'email'),
             'projects' => ArrayHelper::map(Project::getActiveProjects(), 'id', 'name')
         ]);
     }
@@ -100,7 +101,7 @@ class TaskController extends Controller
         return $this->render('update', [
             'model' => $model,
             'authors'=>ArrayHelper::map(
-                User::getActiveUsers(), 'id', 'email'),
+                User::findActiveUsers(['id', 'email'])->asArray()->all(), 'id', 'email'),
             'projects' => ArrayHelper::map(Project::getActiveProjects(), 'id', 'name')
 
         ]);

@@ -4,24 +4,21 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Project;
+use common\models\Comment;
 
 /**
- * ProjectSearch represents the model behind the search form of `common\models\Project`.
+ * CommentSearch represents the model behind the search form of `common\models\Comment`.
  */
-class ProjectSearch extends Project
+class CommentSearch extends Comment
 {
-    public $authorEmail;
-    public $projectName;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'author_id', 'project_status_id', 'created_at', 'updated_at'], 'integer'],
-            [['name'], 'safe'],
-            [['authorEmail', 'projectName'], 'string']
+            [['id', 'task_id'], 'integer'],
+            [['text'], 'safe'],
         ];
     }
 
@@ -43,7 +40,7 @@ class ProjectSearch extends Project
      */
     public function search($params)
     {
-        $query = Project::find();
+        $query = Comment::find();
 
         // add conditions that should always apply here
 
@@ -62,15 +59,10 @@ class ProjectSearch extends Project
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'author_id' => $this->author_id,
-            'project_status_id' => $this->project_status_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'task_id' => $this->task_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
-        $query->andFilterWhere(['like', 'name', $this->authorEmail]);
-        $query->andFilterWhere(['like', 'name', $this->projectName]);
+        $query->andFilterWhere(['like', 'text', $this->text]);
 
         return $dataProvider;
     }

@@ -12,6 +12,5 @@ use yii\rest\ActiveController;
 
 class TaskController extends ActiveController
 {
-
     public $modelClass = Task::class;
 }

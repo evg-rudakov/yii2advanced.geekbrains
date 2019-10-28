@@ -4,6 +4,7 @@ namespace common\models;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
@@ -212,9 +213,14 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
-    public static function getActiveUsers()
+    public static function findActiveUsers(array $selectFields = []) :ActiveQuery
     {
-        return self::find()->where(['status'=>self::STATUS_ACTIVE])->all();
+        $query =  self::find()->where(['status'=>self::STATUS_ACTIVE]);
 
+        if (!empty($selectFields)) {
+            $query->select($selectFields);
+        }
+        return $query;
     }
+
 }

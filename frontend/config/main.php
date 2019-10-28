@@ -48,36 +48,44 @@ $config =  [
             'showScriptName' => false,
 //            'enableStrictParsing' => true,
             'rules' => [
-                '/'=> 'project/index',
-//                [
-//                    'class' => \yii\rest\UrlRule::class,
-//                    'controller' => 'api/user',
-//                    'pluralize' => true,
-//                    'extraPatterns' => [
-//                        // actions
-//                        'POST sign-up' => 'sign-up',
-//                        'POST sign-in' => 'sign-in',
-//                        'GET me' => 'me',
-//                    ],
-//                ],
-//                [
-//                    'class' => \yii\rest\UrlRule::class,
-//                    'controller' => 'api/task',
-//                    'pluralize' => true,
-//                ],
+                [
+                    'controller' => 'task',
+                    'class' => \yii\rest\UrlRule::class,
+                    //отключим трансформацию task в tasks
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        //'METHOD action' => 'actionFunction',
+                        'POST random/<count>' => 'random',
+                    ],
+                ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'api/user',
+                    'pluralize' => true,
+                    'extraPatterns' => [
+                        // actions
+                        'GET me' => 'me',
+                        'GET <id>/tasks' => 'tasks',
+                    ],
+                ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'api/task',
+                    'pluralize' => true,
+                ],
             ],
         ],
-//        'view'=>[
-//            'theme' => [
-//                'basePath' => '@app/themes/first',  //базовая директория со стилизованными ресурсами (CSS, JS, изображения)
-//                'baseUrl' => '@web/themes/first',   // базовый адрес доступа к стилизованным ресурсам.
-//                'pathMap' => [  //правила замены файлов view
-//                    '@app/views/user' => '@app/themes/first/user',
-//                    '@app/modules' => '@app/themes/first/modules',
-//                    '@app/widgets' => '@app/themes/first/widgets',
-//                ],
-//            ]
-//        ],
+        'view'=>[
+            'theme' => [
+                'basePath' => '@app/themes/first',  //базовая директория со стилизованными ресурсами (CSS, JS, изображения)
+                'baseUrl' => '@web/themes/first',   // базовый адрес доступа к стилизованным ресурсам.
+                'pathMap' => [  //правила замены файлов view
+                    '@app/views/user' => '@app/themes/first/user',
+                    '@app/modules' => '@app/themes/first/modules',
+                    '@app/widgets' => '@app/themes/first/widgets',
+                ],
+            ]
+        ],
 
     ],
     'modules' => [

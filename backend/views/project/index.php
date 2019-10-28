@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($model->name, ['project/view', 'id' => $model->id]);
                 }
             ],
-            'user_id',
+            'author.email',
             'project_status_id',
             'created_at',
             //'updated_at',

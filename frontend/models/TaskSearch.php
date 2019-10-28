@@ -14,11 +14,14 @@ class TaskSearch extends Task
     /**
      * {@inheritdoc}
      */
+
+    public $projectName;
     public function rules()
     {
         return [
             [['id', 'author_id', 'status_id', 'priority_id', 'created_at', 'updated_at', 'project_id'], 'integer'],
             [['name', 'description'], 'safe'],
+            [['projectName'], 'string']
         ];
     }
 
@@ -35,18 +38,14 @@ class TaskSearch extends Task
      * Creates data provider instance with search query applied
      *
      * @param array $params
-     * @param array $project_id
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $project_id = null)
+    public function search($params)
     {
-        $query = Task::find()->joinWith('project');
-
-        if (isset($project_id)) {
-            $query->where(['project_id'=>$project_id]);
-        }
-
+        $query = Task::find();
+        $query->where(['task.author_id'=>\Yii::$app->user->id]);
+        $query->joinWith('project');
 
         // add conditions that should always apply here
 
@@ -65,7 +64,6 @@ class TaskSearch extends Task
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'author_id' => $this->author_id,
             'status_id' => $this->status_id,
             'priority_id' => $this->priority_id,
             'created_at' => $this->created_at,
@@ -74,9 +72,10 @@ class TaskSearch extends Task
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description]);
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'project.name', $this->projectName]);
+
 
         return $dataProvider;
     }
-
 }
