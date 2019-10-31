@@ -37,5 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at',
         ],
     ]) ?>
+    <?=\common\widgets\chat\ChatWidget::widget(['project_id' => $model->id]) ?>
 
 </div>

@@ -40,5 +40,5 @@ $this->params['breadcrumbs'][] = $this->title;
             'project_id',
         ],
     ]) ?>
-
+    <?= \common\widgets\chat\ChatWidget::widget(['task_id'=>$model->id, 'project_id' => $model->project_id]) ?>
 </div>
