@@ -1,6 +1,7 @@
-let username = $('.js-username').val();
-let project_id = $('.js-project_id').val();
-let task_id = $('.js-task_id').val();
+
+let username = $('meta[name="chat-widget-username"]').attr('content');
+let project_id = $('meta[name="chat-widget-project-id"]').attr('content');
+let task_id = $('meta[name="chat-widget-task-id"]').attr('content');
 
 let chat = new WebSocket('ws://yii2advanced.geekbrains:8080');
 

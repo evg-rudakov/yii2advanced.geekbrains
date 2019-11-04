@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\components\behaviors\ChatLogBehavior;
+use common\components\interfaces\ChatLoggable;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -19,7 +21,7 @@ use yii\db\ActiveRecord;
  * @property ProjectStatus $projectStatus
  * @property User $author
  */
-class Project extends \yii\db\ActiveRecord
+class Project extends \yii\db\ActiveRecord implements ChatLoggable
 {
     /**
      * {@inheritdoc}
@@ -66,6 +68,9 @@ class Project extends \yii\db\ActiveRecord
                     'value' => time(),
                 ],
             ],
+            'chatLogBehavior' => [
+                'class' => ChatLogBehavior::class,
+            ],
         ];
     }
 
@@ -110,6 +115,18 @@ class Project extends \yii\db\ActiveRecord
     public static function getActiveProjects(): array
     {
         return self::find()->where('project_status_id != :finished_status_id', [":finished_status_id" => ProjectStatus::FINISHED_ID])->all();
+
+    }
+
+    public function saveChatLog()
+        {
+        $chatLog = new ChatLog();
+        $message = "Пользователь {$this->author->username} создал новый проект {$this->name}";
+        $chatLog->project_id = $this->id;
+        $chatLog->type = ChatLog::TYPE_CHAT_MESSAGE;
+        $chatLog->username = \Yii::$app->user->identity->username;
+        $chatLog->message = $message;
+        $chatLog->save();
 
     }
 }

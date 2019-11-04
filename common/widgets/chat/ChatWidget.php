@@ -28,6 +28,9 @@ class ChatWidget extends Widget
             $this->username = \Yii::$app->user->identity->username;
         }
 
+        $this->view->registerMetaTag(['name'=>'chat-widget-project-id', 'content'=>$this->project_id]);
+        $this->view->registerMetaTag(['name'=>'chat-widget-task-id', 'content'=>$this->task_id]);
+        $this->view->registerMetaTag(['name'=>'chat-widget-username', 'content'=>$this->username]);
     }
 
     public function run()

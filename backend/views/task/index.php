@@ -7,6 +7,7 @@ use common\models\Task;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\TaskSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+Yii::beginProfile('geekbrains', 'backend/controllers/TaskController::actionIndex');
 
 $this->title = 'Tasks';
 $this->params['breadcrumbs'][] = $this->title;
@@ -34,6 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->author->username;
                 }
             ],
+
+            [
+                'attribute' => 'priority',
+                'value' => function (Task $model) {
+                    return $model->priority->name;
+                }
+            ],
             [
                 'attribute' => 'status_id',
                 'filter' => \common\models\TaskStatus::getStatusName(),
@@ -56,5 +64,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-
 </div>
+<?php
+Yii::endProfile('geekbrains', 'backend/controllers/TaskController::actionIndex');

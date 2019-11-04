@@ -39,12 +39,17 @@ class TaskController extends Controller
      */
     public function actionIndex()
     {
+
         $searchModel = new TaskSearch();
+        Yii::beginProfile('geekbrains', '$dataProvider = $searchModel->search(Yii::$app->request->queryParams);');
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination->pageSize = 100;
+        Yii::endProfile('geekbrains', '$dataProvider = $searchModel->search(Yii::$app->request->queryParams);');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+
         ]);
     }
 

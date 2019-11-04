@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\components\behaviors\ChatLogBehavior;
+use common\components\interfaces\ChatLoggable;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -29,7 +31,7 @@ use yii\web\Linkable;
  * @property Project $project
  * @property TaskStatus $status
  */
-class Task extends \yii\db\ActiveRecord implements Linkable
+class Task extends \yii\db\ActiveRecord implements Linkable, ChatLoggable
 {
     /**
      * {@inheritdoc}
@@ -81,6 +83,9 @@ class Task extends \yii\db\ActiveRecord implements Linkable
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
                     'value' => time(),
                 ],
+            ],
+            'chatLogBehavior' => [
+                'class' => ChatLogBehavior::class,
             ],
         ];
     }
@@ -180,6 +185,19 @@ class Task extends \yii\db\ActiveRecord implements Linkable
             \yii\web\Link::REL_SELF => Url::to(['task/view', 'id' => $this->id], true),
             'author_link' => Url::to(['user/view', 'id' => $this->author_id], true),
         ];
+    }
+
+    public function saveChatLog()
+    {
+        $chatLog = new ChatLog();
+        $message = "Пользователь {$this->author->username} создал новую задачу {$this->name}";
+        $chatLog->task_id = $this->id;
+        $chatLog->project_id = $this->id;
+        $chatLog->type = ChatLog::TYPE_CHAT_MESSAGE;
+        $chatLog->username = \Yii::$app->user->identity->username;
+        $chatLog->message = $message;
+        $chatLog->save();
+
     }
 
 

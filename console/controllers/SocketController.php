@@ -17,6 +17,11 @@ use yii\console\Controller;
 
 class SocketController extends Controller
 {
+
+    /**
+     * Запуск Socket-сервера
+     * @param int $port
+     */
     public function actionStart($port = 8080)
     {
         $server = IoServer::factory(new HttpServer(new WsServer(new SocketServer())), $port);
